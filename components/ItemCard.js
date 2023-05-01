@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 export default function ItemCard({ item }) {
   const { title, desc, image } = item;
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: "auto" }}>
       <CardMedia sx={{ height: 140 }} image={image} title={`${title} image`} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">

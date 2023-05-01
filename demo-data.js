@@ -34,4 +34,16 @@ const data = [
   },
 ];
 
+export function generateDemoData() {
+  const data = [];
+  for (let i = 1; i <= 20; i++)
+    data.push({
+      id: i,
+      title: `title ${i}`,
+      desc: `desc ${i}`,
+      image: "https://placehold.co/140",
+    });
+  return data;
+}
+
 export default data;
