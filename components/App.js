@@ -33,6 +33,7 @@ export default function App() {
         break;
       case NAV_CLICK_ACTION.LOGIN:
         if (setShowLogin === true) return;
+
         setEnableSearchBar(false);
         if (setShowLogin) setShowLogin(true);
         break;
