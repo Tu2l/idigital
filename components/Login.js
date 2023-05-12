@@ -1,30 +1,58 @@
-import { Alert, Button, Grid, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { Alert, Button, Grid, TextField, Typography } from "@mui/material";
+import { NAV_CLICK_ACTION } from "../App";
+import { login } from "../connections/login-register";
+import { AuthContext } from "../contexts/AuthContext";
 
-export default function Login() {
+export default function Login({ callback }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const { setAuthToken } = useContext(AuthContext);
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleRegisterClick = () =>
+    callback ? callback(NAV_CLICK_ACTION.REGISTER) : null;
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    console.log(email, password);
-
-    //validate passwod
-    if (password.length < 5) {
-      setAlert({
-        severity: "error",
-        message: "Password must be greater than or equal to 5 characters",
-      });
-
-      return;
-    }
 
     setAlert({});
+
+    // console.log(email, password);
+
     //submit request for login
+    const handleCallback = {
+      success: (res) => {
+        setAlert({
+          severity: "success",
+          message: res.data.message,
+        });
+        // setLoading(false);
+
+        localStorage.setItem("userId", res.data.data.userid);
+        // console.log(res.data);
+        setAuthToken(res.data.data.token);
+
+        if (callback) callback(NAV_CLICK_ACTION.HOME);
+      },
+      error: (err) => {
+        setLoading(false);
+        console.log(err);
+        const msg = err?.response?.data?.message;
+        setAlert({
+          severity: "error",
+          message: msg ? msg : err.message,
+        });
+      },
+    };
+
+    login({ emailId: email, password }, handleCallback);
+
+    setLoading(true);
   };
 
   return (
@@ -34,7 +62,8 @@ export default function Login() {
         alignItems="center"
         justifyContent="center"
         style={{
-          marginTop: "10%",
+          marginTop: "5%",
+          marginBottom: "5%",
         }}
       >
         <Grid
@@ -45,9 +74,25 @@ export default function Login() {
             textAlign: "center",
           }}
           item
-          xs={4}
+          xs={12}
+          sm={12}
+          md={8}
+          lg={6}
         >
-          <h1>Login</h1>
+          <Typography
+            align="center"
+            variant="h5"
+            sx={{ paddingBottom: "10px" }}
+          >
+            Login
+          </Typography>
+
+          {alert.message ? (
+            <>
+              <Alert severity={alert.severity}>{alert.message}</Alert> <br />
+            </>
+          ) : null}
+
           <TextField
             fullWidth
             value={email}
@@ -74,13 +119,21 @@ export default function Login() {
           <br />
           <br />
 
-          <Button fullWidth variant="contained" type="submit">
-            Login
+          <Button
+            fullWidth
+            variant="contained"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Please wait" : "Login"}
           </Button>
+
           <br />
-          {alert.message ? (
-            <Alert severity={alert.severity}>{alert.message}</Alert>
-          ) : null}
+          <br />
+
+          <Button fullWidth variant="text" onClick={handleRegisterClick}>
+            Don't have an account? Register here
+          </Button>
         </Grid>
       </Grid>
     </form>
