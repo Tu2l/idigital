@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   Button,
@@ -31,15 +31,7 @@ export default function Sell() {
 
   return (
     <form onSubmit={handleOnSubmit}>
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="center"
-        style={{
-          marginTop: "5%",
-          marginBottom: "5%",
-        }}
-      >
+      <Grid container alignItems="center" justifyContent="center">
         <Grid
           style={{
             backgroundColor: "#ecedee",

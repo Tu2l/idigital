@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { Alert, Button, Grid, TextField, Typography } from "@mui/material";
-import { NAV_CLICK_ACTION } from "../App";
-import { login } from "../connections/login-register";
-import { AuthContext } from "../contexts/AuthContext";
+import { NAV_CLICK_ACTION } from "../../App";
+import { login } from "../../connections/login-register";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Login({ callback }) {
   const [email, setEmail] = useState("");

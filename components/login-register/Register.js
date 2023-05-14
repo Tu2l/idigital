@@ -11,8 +11,8 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { NAV_CLICK_ACTION } from "../App";
-import { register } from "../connections/login-register";
+import { NAV_CLICK_ACTION } from "../../App";
+import { register } from "../../connections/login-register";
 
 export default function Register({ callback }) {
   const [alert, setAlert] = useState({});

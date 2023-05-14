@@ -1,7 +1,7 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import React, { useContext } from "react";
-import { NAV_CLICK_ACTION } from "../App";
-import { AuthContext } from "../contexts/AuthContext";
+import { NAV_CLICK_ACTION } from "../../App";
+import { AuthContext } from "../../contexts/AuthContext";
 
 export default function Navbar({ navClickCallback }) {
   const { authToken } = useContext(AuthContext);

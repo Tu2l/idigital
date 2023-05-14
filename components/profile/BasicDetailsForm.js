@@ -64,10 +64,10 @@ export default function BasicDetailsForm({ authToken, userId }) {
     const resCallback = {
       success: (res) => {
         setUserDetails({ ...res.data.data });
-        // setLoading(false);
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000);
+        setLoading(false);
+        // setTimeout(() => {
+        //   setLoading(false);
+        // }, 2000);
       },
       error: (error) => {
         const msg = error?.response?.data?.message;
