@@ -1,0 +1,20 @@
+package com.cg.ps.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cg.ps.service.ProductCategoryService;
+import com.cg.ps.util.ResponseUtil;
+
+@RestController
+@RequestMapping("/category")
+public class CategoryController {
+	
+	@Autowired
+	private ProductCategoryService service;
+	@Autowired
+	private ResponseUtil responseUtil;
+	
+	
+}

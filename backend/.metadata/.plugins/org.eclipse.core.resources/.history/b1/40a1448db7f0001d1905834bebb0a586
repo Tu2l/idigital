@@ -1,0 +1,17 @@
+package com.cg.ps.service;
+
+import com.cg.ps.dto.ProductDto;
+
+public interface ProductService {
+	Object get();
+	
+	Object get(int page);
+	
+	Object get(Long productId);
+	
+	Object add(ProductDto dto);
+	
+	Object update(ProductDto dto);
+	
+	Object delete(Long productId);
+}

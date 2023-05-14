@@ -1,0 +1,5 @@
+package com.cg.upload.repository;
+
+public interface UploadRepo {
+
+}

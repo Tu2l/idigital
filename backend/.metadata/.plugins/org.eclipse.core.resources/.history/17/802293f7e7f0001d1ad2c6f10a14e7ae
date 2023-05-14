@@ -1,0 +1,35 @@
+package com.cg.upload;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import com.cg.upload.util.UploadUtil;
+
+@SpringBootApplication
+public class ImageUploadServiceApplication implements WebMvcConfigurer { {
+
+	@Bean
+	UploadUtil uploadUtil() {
+		return new UploadUtil();
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(ImageUploadServiceApplication.class, args);
+	}
+	
+	@Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        exposeDirectory("uploads", registry);
+    }
+     
+    private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {
+        Path uploadDir = Paths.get(dirName);
+        String uploadPath = uploadDir.toFile().getAbsolutePath();
+         
+        if (dirName.startsWith("../")) dirName = dirName.replace("../", "");
+         
+        registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("file:/"+ uploadPath + "/");
+    }
+
+}

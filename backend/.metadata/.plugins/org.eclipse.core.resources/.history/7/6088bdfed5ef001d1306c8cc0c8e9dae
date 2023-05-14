@@ -1,0 +1,51 @@
+package com.cg.gateway.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cg.gateway.dto.JwtRequest;
+import com.cg.gateway.dto.UserDto;
+import com.cg.gateway.service.RemoteAuthService;
+import com.cg.gateway.util.ResponseUtil;
+
+@RestController
+@RequestMapping("/auth")
+public class RemoteAuthController {
+	@Autowired
+	private RemoteAuthService authService;
+
+	@Autowired
+	private ResponseUtil responseUtil;
+
+	@PostMapping
+	public ResponseEntity<?> login(@RequestBody JwtRequest request) {
+		return responseUtil.createSuccessResponse(authService.login(request).getData(), "/api/auth",
+				HttpStatus.ACCEPTED);
+	}
+
+	@PostMapping("/register")
+	public ResponseEntity<?> register(@RequestBody UserDto request) {
+		return responseUtil.createSuccessResponse(authService.register(request).getData(), "/api/auth/register",
+				HttpStatus.CREATED);
+	}
+
+	@GetMapping("/validate/{token}")
+	public ResponseEntity<?> validate(@PathVariable String token) {
+		return responseUtil.createSuccessResponse(authService.validate(token).getData(), "/api/auth/validate/" + token,
+				HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{token}")
+	public ResponseEntity<?> signOut(@PathVariable String token) {
+		return responseUtil.createSuccessResponse(authService.signOut(token).getData(), "/api/auth/" + token,
+				HttpStatus.OK);
+	}
+}

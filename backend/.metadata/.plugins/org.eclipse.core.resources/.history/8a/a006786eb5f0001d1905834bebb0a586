@@ -1,0 +1,11 @@
+package com.cg.ps.service;
+
+import com.cg.ps.dto.ProductCategoryDto;
+
+public interface ProductCategoryService {
+	Object add(ProductCategoryDto dto);
+	
+	Object update(ProductCategoryDto dto);
+	
+	Object delete(Long categoryId);
+}

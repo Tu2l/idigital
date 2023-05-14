@@ -1,0 +1,16 @@
+package com.cg.authservice.service;
+
+import com.cg.authservice.dto.JwtRequest;
+import com.cg.authservice.dto.UserDto;
+
+public interface AuthService {
+	Object signIn(JwtRequest request);
+
+	Object register(UserDto dto);
+
+	Object signOut(String token);
+
+	Object validateToken(String token);
+
+	Object updateUser(UserDto dto);
+}

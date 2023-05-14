@@ -1,0 +1,5 @@
+package com.cg.upload.entity;
+
+public class Upload {
+
+}

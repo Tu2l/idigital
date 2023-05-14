@@ -1,0 +1,57 @@
+package com.cg.upload.serviceimpl;
+
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.cg.upload.service.UploadService;
+
+public class UploadServiceImpl implements UploadService {
+	private final Path root = Paths.get("uploads");
+
+	@Override
+	public Object upload(String ownerId, MultipartFile[] files) {
+		for (MultipartFile file : files) {
+			try {
+				if (!Files.exists(root))
+					Files.createDirectory(root);
+
+//				String fileName = RandomStringUtils.random(12,true,true);
+				String fileName = String.format("%s%s", ownerId, System.currentTimeMillis());
+
+				Files.copy(file.getInputStream(), this.root.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+			} catch (Exception e) {
+				throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Object remove(String fileName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object removeAllByOwner(String ownerId) {
+		return null;
+	}
+
+	@Override
+	public Object get(String ownerId) {
+		return null;
+	}
+
+	@Override
+	public Object getFile(String fileName) {
+		return null;
+	}
+
+}

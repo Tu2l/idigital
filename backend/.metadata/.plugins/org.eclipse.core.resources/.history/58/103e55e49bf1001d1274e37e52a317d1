@@ -1,0 +1,5 @@
+package com.cg.ads.dto;
+
+public interface ProductAdDto {
+
+}

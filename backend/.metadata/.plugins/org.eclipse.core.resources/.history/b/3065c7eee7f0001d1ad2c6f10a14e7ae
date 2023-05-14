@@ -1,0 +1,21 @@
+package com.cg.upload;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import com.cg.upload.util.UploadUtil;
+
+@SpringBootApplication
+public class ImageUploadServiceApplication {
+
+	@Bean
+	UploadUtil uploadUtil() {
+		return new UploadUtil();
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(ImageUploadServiceApplication.class, args);
+	}
+
+}

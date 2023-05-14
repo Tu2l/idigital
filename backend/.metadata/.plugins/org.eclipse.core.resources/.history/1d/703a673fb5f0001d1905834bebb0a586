@@ -1,0 +1,5 @@
+package com.cg.ps.service;
+
+public interface ProductCategoryService {
+
+}

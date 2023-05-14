@@ -1,0 +1,15 @@
+package com.cg.ads.service;
+
+import com.cg.ads.dto.ProductCategoryDto;
+
+public interface ProductCategoryService {
+	Object get();
+	
+	Object get(Long categoryId);
+	
+	Object add(ProductCategoryDto dto);
+	
+	Object update(ProductCategoryDto dto);
+	
+	Object delete(Long categoryId);
+}
