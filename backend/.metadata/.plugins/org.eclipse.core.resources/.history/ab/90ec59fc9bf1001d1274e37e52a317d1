@@ -1,0 +1,12 @@
+package com.cg.ads.dto;
+
+import lombok.Data;
+
+public interface ProductAdDto {
+	private Long productId;
+	private String title;
+	private double price;
+	private int quantity;
+	private Long categoryId;
+	private Boolean accepted;
+}

@@ -1,0 +1,5 @@
+package com.cg.ps.dto;
+
+public class ProductCategoryDto {
+
+}

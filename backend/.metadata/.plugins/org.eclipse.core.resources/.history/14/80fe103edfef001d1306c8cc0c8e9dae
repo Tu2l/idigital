@@ -1,0 +1,21 @@
+package com.cg.users.service;
+
+import java.util.List;
+
+import com.cg.users.dto.UserDto;
+
+public interface UserService {
+	UserDto get(Long userId);
+	
+	UserDto get(String email);
+	
+	List<UserDto> get();
+	
+	UserDto add(UserDto userDto);
+
+	UserDto update(UserDto userDto);
+
+	UserDto delete(Long id);
+
+	UserDto changePassword(UserDto userDto);
+}

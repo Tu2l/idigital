@@ -1,0 +1,5 @@
+package com.cg.ps.entity;
+
+public class ProductCategory {
+
+}

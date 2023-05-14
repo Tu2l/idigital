@@ -1,0 +1,5 @@
+package com.cg.upload.service;
+
+public interface UploadService {
+	
+}
