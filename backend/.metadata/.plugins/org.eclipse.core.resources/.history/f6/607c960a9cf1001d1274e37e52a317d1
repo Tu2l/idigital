@@ -1,6 +1,0 @@
-package com.cg.ads.dto;
-
-import lombok.Data;
-
-public interface ProductAdDto {
-}

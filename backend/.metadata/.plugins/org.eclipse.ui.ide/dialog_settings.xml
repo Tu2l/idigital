@@ -38,8 +38,7 @@
 		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
 		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
 		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
-			<item value="C:\Users\tutroy\Documents\dev\IDigital\case_study_1\backend\gateway"/>
-			<item value="C:\Users\tutroy\Documents\dev\IDigital\case_study_1\backend\auth-service"/>
+			<item value="C:\Users\tutroy\Documents\dev\IDigital\idigital\backend"/>
 		</list>
 	</section>
 </section>

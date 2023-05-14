@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = {"com.cg.ad.service"})
+@EnableFeignClients(basePackages = {"com.cg.ads.service"})
 public class AdServiceApplication {
 
 	@Bean

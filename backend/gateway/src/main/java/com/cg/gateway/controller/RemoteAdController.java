@@ -17,7 +17,7 @@ import com.cg.gateway.service.RemoteAdService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/ad")
 public class RemoteAdController {
 	@Autowired
 	private RemoteAdService service;

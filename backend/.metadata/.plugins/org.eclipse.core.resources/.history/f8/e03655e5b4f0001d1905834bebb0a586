@@ -1,5 +1,0 @@
-package com.cg.ps.repository;
-
-public interface ProductRepo {
-
-}

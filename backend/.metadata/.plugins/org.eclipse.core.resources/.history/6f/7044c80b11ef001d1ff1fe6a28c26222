@@ -1,5 +1,0 @@
-package com.cg.authservice.entity;
-
-public class UserToken {
-
-}

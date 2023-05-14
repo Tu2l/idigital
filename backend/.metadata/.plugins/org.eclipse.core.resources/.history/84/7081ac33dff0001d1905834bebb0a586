@@ -1,5 +1,0 @@
-package com.cg.upload.dto;
-
-public class FileResponse {
-
-}

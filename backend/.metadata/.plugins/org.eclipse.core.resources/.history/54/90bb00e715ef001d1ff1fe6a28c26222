@@ -1,5 +1,0 @@
-package com.cg.authservice.repository;
-
-public class UserTokenRepo {
-
-}

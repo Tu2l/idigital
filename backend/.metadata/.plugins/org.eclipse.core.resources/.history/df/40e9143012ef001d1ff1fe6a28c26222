@@ -1,6 +1,0 @@
-spring.application.name=ecom-auth-service
-server.port=8001
-server.servlet.context-path=/
-
-#jwt-secrect
-#jwt.secret=qwertyuio

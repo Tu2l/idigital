@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cg.gateway.service.RemoteUploadService;
+
 @CrossOrigin
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/upload")
 public class RemoteUploadController {
 	@Autowired
-	private RemoteUploadController service;
+	private RemoteUploadService service;
 
 	@PostMapping("/{ownerId}")
 	public ResponseEntity<?> upload(@PathVariable String ownerId, @RequestParam("files") MultipartFile[] files) {
