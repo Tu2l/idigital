@@ -1,5 +1,7 @@
 package com.cg.ads.dto;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -25,6 +27,11 @@ public class ProductAdDto {
 	private int quantity;
 	@NotNull(message = "Category id must be valid")
 	private Long categoryId;
+	
+	@JsonProperty(access = Access.READ_ONLY)
+	private LocalDate createdAt;
+	@JsonProperty(access = Access.READ_ONLY)
+	private LocalDate updatedAt;
 	@JsonProperty(access = Access.READ_ONLY)
 	private Boolean accepted;
 

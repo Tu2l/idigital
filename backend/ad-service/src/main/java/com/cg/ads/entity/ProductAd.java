@@ -1,6 +1,6 @@
 package com.cg.ads.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,16 +27,16 @@ public class ProductAd {
 	private int quantity;
 	private Long categoryId;
 	private Boolean accepted;
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
+	private LocalDate createdAt;
+	private LocalDate updatedAt;
 
 	@PrePersist
 	private void createdAt() {
-		this.createdAt = this.updatedAt = LocalDateTime.now();
+		this.createdAt = this.updatedAt = LocalDate.now();
 	}
 
 	@PreUpdate
 	private void update() {
-		this.updatedAt = LocalDateTime.now();
+		this.updatedAt = LocalDate.now();
 	}
 }
