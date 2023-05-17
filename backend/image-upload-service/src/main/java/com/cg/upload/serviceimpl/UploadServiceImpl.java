@@ -29,7 +29,7 @@ public class UploadServiceImpl implements UploadService {
 		info.setOwnerId(ownerId);
 
 		for (MultipartFile file : files) {
-			StringBuilder path = new StringBuilder("http://localhost:8004/");
+			StringBuilder path = new StringBuilder("http://localhost:8004/api/");
 			path.append(uploadUtil.prepareImage(file, ownerId));
 			String fileName = path.substring(path.lastIndexOf("/") + 1);
 			info.getUrls().add(path.toString());

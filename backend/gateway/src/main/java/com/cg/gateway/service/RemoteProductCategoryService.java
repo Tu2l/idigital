@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "product-category-service", url = "http://localhost:8003/api/category")
@@ -18,7 +19,7 @@ public interface RemoteProductCategoryService {
 	@PostMapping
 	Object add(@RequestBody Object dto);
 
-	@PostMapping("/{categoryId}")
+	@PutMapping("/{categoryId}")
 	Object update(@PathVariable Long categoryId, @RequestBody Object dto);
 
 	@DeleteMapping("/{categoryId}")

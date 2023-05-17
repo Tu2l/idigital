@@ -10,4 +10,5 @@ import com.cg.ps.entity.ProductCategory;
 @Repository
 public interface CategoryRepo extends JpaRepository<ProductCategory, Long>{
 	Optional<ProductCategory> findByName(String name);
+
 }

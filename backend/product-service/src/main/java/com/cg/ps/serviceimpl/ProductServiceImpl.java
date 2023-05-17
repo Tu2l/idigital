@@ -102,10 +102,13 @@ public class ProductServiceImpl implements ProductService {
 
 		if (dto.getStock() != product.getStock())
 			product.setStock(dto.getStock());
+		
+		if (dto.getDescription() != null && !product.getDescription().equals(dto.getDescription()))
+			product.setDescription(dto.getDescription());
 
-		if (dto.getCategoryId() != null && !product.getCategory().getCategoryId().equals(dto.getCategoryId())) {
+		if (dto.getCategoryId() != null && !product.getCategoryId().equals(dto.getCategoryId())) {
 			ProductCategoryDto cat = (ProductCategoryDto) categoryService.get(dto.getCategoryId());
-			product.setCategory(mapper.map(cat, ProductCategory.class));
+			product.setCategoryId(cat.getCategoryId());
 		}
 
 		return mapper.map(productRepo.save(product), ProductDto.class);

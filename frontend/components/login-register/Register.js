@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { NAV_CLICK_ACTION } from "../../App";
+import { NAV_CLICK_ACTION } from "../../nav-actions";
 import { register } from "../../connections/login-register";
 
 export default function Register({ callback }) {
@@ -82,15 +82,7 @@ export default function Register({ callback }) {
 
   return (
     <form onSubmit={handleOnSubmit}>
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="center"
-        style={{
-          marginTop: "5%",
-          marginBottom: "5%",
-        }}
-      >
+      <Grid container alignItems="center" justifyContent="center">
         <Grid
           style={{
             backgroundColor: "#ecedee",
@@ -100,8 +92,8 @@ export default function Register({ callback }) {
           }}
           item
           xs={12}
-          sm={12}
-          md={8}
+          sm={10}
+          md={6}
           lg={6}
         >
           <Typography

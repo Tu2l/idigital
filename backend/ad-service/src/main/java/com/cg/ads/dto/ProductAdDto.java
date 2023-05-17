@@ -19,7 +19,7 @@ public class ProductAdDto {
 	@NotBlank(message = "Product title must not be blank")
 	private String title;
 	@NotBlank(message = "Product description must not be blank")
-	private String desc;
+	private String description;
 	private String remarks;
 	@Min(message = "Product price must be greater than 0", value = 1)
 	private double price;

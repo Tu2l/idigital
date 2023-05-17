@@ -33,6 +33,12 @@ public class AuthController {
 		return responseUtil.createSuccessResponse(authService.signIn(request), BASE_URL, HttpStatus.ACCEPTED);
 	}
 
+	@PostMapping("/admin")
+	public ResponseEntity<?> adminLogin(@Valid @RequestBody JwtRequest request) {
+		return responseUtil.createSuccessResponse(authService.adminSignIn(request), BASE_URL, HttpStatus.ACCEPTED);
+	}
+
+	
 	@GetMapping("/validate/{token}")
 	public ResponseEntity<?> validate(@PathVariable String token) {
 		return responseUtil.createSuccessResponse(authService.validateToken(token), BASE_URL + "/validate/" + token,

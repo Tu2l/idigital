@@ -1,23 +1,6 @@
-import {
-  Alert,
-  Button,
-  Grid,
-  TextField,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  Typography,
-  Box,
-  Container,
-} from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
-import { NAV_CLICK_ACTION } from "../../App";
-import {
-  getUserDetails,
-  updateUserDetails,
-} from "../../connections/user-details";
+import { Button, Grid, Container } from "@mui/material";
+import React, { useContext, useState } from "react";
+import { NAV_CLICK_ACTION } from "../../nav-actions";
 import { AuthContext } from "../../contexts/AuthContext";
 import AddressForm from "./AddressForm";
 import BasicDetailsForm from "./BasicDetailsForm";
@@ -30,13 +13,50 @@ export default function Profile({ callback }) {
     ADS: "ads",
   };
 
-  const [selected, setSelected] = useState(MENU_ACTIONS.BASIC_DETAILS);
   const { authToken } = useContext(AuthContext);
-
   const userId = localStorage.getItem("userId");
+
   if (!userId || !authToken) callback(NAV_CLICK_ACTION.LOGIN);
 
-  const handleMenuSelect = (action) => setSelected(action);
+  const [selected, setSelected] = useState(MENU_ACTIONS.BASIC_DETAILS);
+  const [component, setComponent] = useState(
+    <BasicDetailsForm authToken={authToken} userId={userId} />
+  );
+
+  const handleMenuSelect = (action) => {
+    setSelected(action);
+    switch (action) {
+      case MENU_ACTIONS.BASIC_DETAILS:
+        setComponent(
+          <BasicDetailsForm authToken={authToken} userId={userId} />
+        );
+        break;
+
+      case MENU_ACTIONS.ADDRESS:
+        setComponent(<AddressForm authToken={authToken} userId={userId} />);
+        break;
+
+      case MENU_ACTIONS.ORDERS:
+        setComponent(
+          <>
+            <h3 authToken={authToken} userId={userId}>
+              Orders
+            </h3>
+          </>
+        );
+        break;
+
+      case MENU_ACTIONS.ADS:
+        setComponent(
+          <>
+            <h3 authToken={authToken} userId={userId}>
+              Ads
+            </h3>
+          </>
+        );
+        break;
+    }
+  };
 
   const gridStyle = {
     backgroundColor: "#ecedee",
@@ -45,37 +65,6 @@ export default function Profile({ callback }) {
     borderRadius: "10px",
     textAlign: "center",
   };
-
-  let component;
-  switch (selected) {
-    case MENU_ACTIONS.BASIC_DETAILS:
-      component = <BasicDetailsForm authToken={authToken} userId={userId} />;
-      break;
-
-    case MENU_ACTIONS.ADDRESS:
-      component = <AddressForm authToken={authToken} userId={userId} />;
-      break;
-
-    case MENU_ACTIONS.ORDERS:
-      component = (
-        <>
-          <h3 authToken={authToken} userId={userId}>
-            Orders
-          </h3>
-        </>
-      );
-      break;
-
-    case MENU_ACTIONS.ADS:
-      component = component = (
-        <>
-          <h3 authToken={authToken} userId={userId}>
-            Ads
-          </h3>
-        </>
-      );
-      break;
-  }
 
   return (
     <Grid container alignContent={"center"} justifyContent={"center"}>
@@ -86,7 +75,6 @@ export default function Profile({ callback }) {
             // backgroundColor: "#cacaca",
             width: "100%",
             height: "100px",
-            paddingTop: "30px",
           }}
         >
           <Button

@@ -34,8 +34,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
 	@Override
 	public ProductCategoryDto add(ProductCategoryDto dto) {
-		repo.findByName(dto.getName())
-				.orElseThrow(() -> new RuntimeException("Category with same name already exists"));
+		if (repo.findByName(dto.getName()).isPresent())
+			throw new RuntimeException("Category with same name already exists");
+		
 		ProductCategory category = mapper.map(dto, ProductCategory.class);
 		return mapper.map(repo.save(category), ProductCategoryDto.class);
 	}

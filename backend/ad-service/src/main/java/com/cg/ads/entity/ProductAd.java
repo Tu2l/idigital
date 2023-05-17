@@ -21,7 +21,7 @@ public class ProductAd {
 	private Long userId;
 	@Column(nullable = false)
 	private String title;
-	private String desc;
+	private String description;
 	private String remarks;
 	private double price;
 	private int quantity;
