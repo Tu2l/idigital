@@ -1,70 +1,40 @@
-import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import React, { useContext } from "react";
-import { NAV_CLICK_ACTION } from "../../App";
+import { Alert, AppBar, Box, Container, LinearProgress } from "@mui/material";
 import { AuthContext } from "../../contexts/AuthContext";
+import { NavContext } from "../../contexts/NavContext";
+import AdminToolbar from "../admin/AdminToolbar";
+import UserToolbar from "./UserToolbar";
 
-export default function Navbar({ navClickCallback }) {
+export default function Navbar() {
   const { authToken } = useContext(AuthContext);
+  const { navAction, setNavAction, isAdmin, loading, alert } =
+    useContext(NavContext);
 
   return (
-    <Box>
+    <Box sx={{ marginBottom: "2%" }}>
       <AppBar position="static">
-        <Toolbar>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-          >
-            Buy Sell Trade
-          </Typography>
-
-          <Button
-            color="inherit"
-            onClick={() => navClickCallback(NAV_CLICK_ACTION.HOME)}
-          >
-            Home
-          </Button>
-
-          {authToken ? (
-            <Button
-              color="inherit"
-              onClick={() => navClickCallback(NAV_CLICK_ACTION.SELL)}
-            >
-              Sell
-            </Button>
-          ) : null}
-
-          <Button
-            color="inherit"
-            onClick={() => navClickCallback(NAV_CLICK_ACTION.SEARCH)}
-          >
-            Search
-          </Button>
-
-          {authToken ? (
-            <Button
-              color="inherit"
-              onClick={() => navClickCallback(NAV_CLICK_ACTION.PROFILE)}
-            >
-              Profile
-            </Button>
-          ) : null}
-
-          <Button
-            color="inherit"
-            onClick={() => {
-              if (authToken) {
-                navClickCallback(NAV_CLICK_ACTION.LOGOUT);
-                return;
-              }
-              navClickCallback(NAV_CLICK_ACTION.LOGIN);
-            }}
-          >
-            {authToken ? "Logout" : "Login"}
-          </Button>
-        </Toolbar>
+        {isAdmin ? (
+          <AdminToolbar />
+        ) : (
+          <UserToolbar
+            authToken={authToken}
+            navAction={navAction}
+            setNavAction={setNavAction}
+          />
+        )}
       </AppBar>
+      {loading ? <LinearProgress color="warning" /> : null}
+      {alert.message ? (
+        <Container>
+          <Alert
+            severity={alert.severity}
+            sx={{ padding: "10px", margin: "10px" }}
+          >
+            {alert.message}
+          </Alert>{" "}
+          <br />
+        </Container>
+      ) : null}
     </Box>
   );
 }

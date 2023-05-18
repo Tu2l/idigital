@@ -103,8 +103,8 @@ public class ProductAdServiceImpl implements ProductAdService {
 		if (dto.getTitle() != null && !ad.getTitle().equals(dto.getTitle()))
 			ad.setTitle(dto.getTitle());
 
-		if (dto.getDesc() != null && !ad.getDesc().equals(dto.getDesc()))
-			ad.setDesc(dto.getDesc());
+		if (dto.getDescription() != null && !ad.getDescription().equals(dto.getDescription()))
+			ad.setDescription(dto.getDescription());
 
 		if (dto.getRemarks() != null && !ad.getRemarks().equals(dto.getRemarks()))
 			ad.setRemarks(dto.getRemarks());

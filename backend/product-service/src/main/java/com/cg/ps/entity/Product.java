@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -20,11 +21,11 @@ public class Product {
 	private Long productId;
 	@Column(nullable = false)
 	private String title;
+	private String description;
 	private double price;
 	private int stock;
 	
-	@OneToOne(optional = false)
-	private ProductCategory category;
+	private Long categoryId;
 	
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;

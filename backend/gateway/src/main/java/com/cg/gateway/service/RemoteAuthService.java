@@ -11,6 +11,9 @@ public interface RemoteAuthService {
 	@PostMapping
 	Object login(Object request);
 	
+	@PostMapping("/admin")
+	Object adminLogin(Object request);
+	
 	@GetMapping("/validate/{token}")
 	Object validate(@PathVariable String token);
 	

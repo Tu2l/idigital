@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.cg.authservice.dto.JwtRequest;
 import com.cg.authservice.dto.JwtResponse;
 import com.cg.authservice.dto.ResponseObject;
+import com.cg.authservice.dto.USER_ROLE;
 import com.cg.authservice.entity.UserToken;
 import com.cg.authservice.repository.UserTokenRepo;
 import com.cg.authservice.service.AuthService;
@@ -52,6 +53,38 @@ public class AuthServiceImpl implements AuthService {
 		}
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmailId());
+
+		final String token = jwtUtil.generateToken(userDetails);
+
+		final Long userId = userDetailsService.getUser().getUserId();
+		// save token
+		tokenRepo.deleteByUserId(userId);
+
+		UserToken userToken = new UserToken();
+		userToken.setToken(token);
+		userToken.setUserId(userId);
+
+		tokenRepo.save(userToken);
+
+		return new JwtResponse(token,userId);
+	}
+	
+	@Transactional
+	@Override
+	public Object adminSignIn(JwtRequest request) {
+		try {
+			authManager
+					.authenticate(new UsernamePasswordAuthenticationToken(request.getEmailId(), request.getPassword()));
+		} catch (DisabledException e) {
+			throw new RuntimeException("USER_DISABLED");
+		} catch (BadCredentialsException e) {
+			throw new RuntimeException("INVALID_CREDENTIALS");
+		}
+
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmailId());
+		
+		if(userDetailsService.getUser().getRole() != USER_ROLE.ADMIN)
+			throw new RuntimeException("User is not an Admin");
 
 		final String token = jwtUtil.generateToken(userDetails);
 

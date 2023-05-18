@@ -16,6 +16,17 @@ export const login = ({ emailId, password }, callback) => {
     });
 };
 
+export const adminLogin = (credentials, callback) => {
+  axios
+    .post(BASE_API_URL + "auth/admin", credentials)
+    .then((res) => {
+      callback.success(res);
+    })
+    .catch((err) => {
+      callback.error(err);
+    });
+};
+
 export const register = async ({ userDetails, address }, callback) => {
   axios
     .post(BASE_API_URL + "user", userDetails)
