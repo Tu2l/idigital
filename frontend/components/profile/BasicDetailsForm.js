@@ -9,15 +9,16 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   getUserDetails,
   updateUserDetails,
 } from "../../connections/user-details";
+import { NavContext } from "../../contexts/NavContext";
 
 export default function BasicDetailsForm({ authToken, userId }) {
-  const [alert, setAlert] = useState({});
-  const [loading, setLoading] = useState(false);
+  const { loading, setLoading, alert, setAlert } = useContext(NavContext);
+
   const [editDetails, setEditDetails] = useState(false);
   const [userDetails, setUserDetails] = useState({
     emailId: "",
@@ -65,9 +66,6 @@ export default function BasicDetailsForm({ authToken, userId }) {
       success: (res) => {
         setUserDetails({ ...res.data.data });
         setLoading(false);
-        // setTimeout(() => {
-        //   setLoading(false);
-        // }, 2000);
       },
       error: (error) => {
         const msg = error?.response?.data?.message;
@@ -83,147 +81,140 @@ export default function BasicDetailsForm({ authToken, userId }) {
   }, []);
 
   return (
-    <>
-      {alert.message ? (
-        <>
-          <Alert severity={alert.severity}>{alert.message}</Alert> <br />
-        </>
-      ) : null}
-      <form onSubmit={handleUserDetailsUpdate}>
-        <Typography align="left" variant="h5" sx={{ paddingBottom: "10px" }}>
-          Personal Details
-        </Typography>
+    <form onSubmit={handleUserDetailsUpdate}>
+      <Typography align="left" variant="h5" sx={{ paddingBottom: "10px" }}>
+        Personal Details
+      </Typography>
 
+      <TextField
+        fullWidth
+        value={userDetails?.emailId}
+        onChange={(e) => {
+          setUserDetails({ ...userDetails, emailId: e.target.value });
+        }}
+        label="Email"
+        variant="outlined"
+        type="email"
+        disabled={true}
+      />
+      <br />
+      <br />
+
+      <span
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <TextField
           fullWidth
-          value={userDetails?.emailId}
+          value={userDetails?.firstName}
           onChange={(e) => {
-            setUserDetails({ ...userDetails, emailId: e.target.value });
+            setUserDetails({ ...userDetails, firstName: e.target.value });
           }}
-          label="Email"
+          label="First Name"
           variant="outlined"
-          type="email"
-          disabled={true}
-        />
-        <br />
-        <br />
-
-        <span
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <TextField
-            fullWidth
-            value={userDetails?.firstName}
-            onChange={(e) => {
-              setUserDetails({ ...userDetails, firstName: e.target.value });
-            }}
-            label="First Name"
-            variant="outlined"
-            type="text"
-            disabled={!editDetails}
-          />
-
-          <TextField
-            fullWidth
-            value={userDetails?.lastName}
-            onChange={(e) => {
-              setUserDetails({ ...userDetails, lastName: e.target.value });
-            }}
-            label="Last Name"
-            variant="outlined"
-            type="text"
-            disabled={!editDetails}
-          />
-        </span>
-
-        <br />
-
-        <TextField
-          fullWidth
-          value={userDetails?.mobileNumber}
-          onChange={(e) => {
-            setUserDetails({ ...userDetails, mobileNumber: e.target.value });
-          }}
-          label="Mobile Number"
-          variant="outlined"
-          type="number"
+          type="text"
           disabled={!editDetails}
         />
 
-        <br />
-        <br />
-
-        <FormControl fullWidth>
-          <FormLabel
-            id="gender-radio-group-label"
-            sx={{
-              textAlign: "left",
-            }}
-          >
-            Gender
-          </FormLabel>
-          <RadioGroup
-            aria-labelledby="gender-radio-group-label"
-            value={userDetails?.gender}
-            name="radio-buttons-group"
-            row
-            onChange={(e) => {
-              setUserDetails({ ...userDetails, gender: e.target.value });
-            }}
-          >
-            <FormControlLabel
-              disabled={!editDetails}
-              value="male"
-              control={<Radio />}
-              label="Male"
-            />
-            <FormControlLabel
-              disabled={!editDetails}
-              value="female"
-              control={<Radio />}
-              label="Female"
-            />
-            <FormControlLabel
-              disabled={!editDetails}
-              value="other"
-              control={<Radio />}
-              label="Other"
-            />
-          </RadioGroup>
-        </FormControl>
-
-        <br />
-        <br />
-
-        {editDetails ? (
-          <Button
-            fullWidth
-            sx={{
-              marginBottom: "5px",
-            }}
-            variant="contained"
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? "Please wait" : "Save"}
-          </Button>
-        ) : null}
-
-        <Button
+        <TextField
           fullWidth
-          variant="contained"
-          color={editDetails ? "error" : "success"}
-          disabled={loading}
-          onClick={(e) => {
-            setEditDetails(!editDetails);
+          value={userDetails?.lastName}
+          onChange={(e) => {
+            setUserDetails({ ...userDetails, lastName: e.target.value });
+          }}
+          label="Last Name"
+          variant="outlined"
+          type="text"
+          disabled={!editDetails}
+        />
+      </span>
+
+      <br />
+
+      <TextField
+        fullWidth
+        value={userDetails?.mobileNumber}
+        onChange={(e) => {
+          setUserDetails({ ...userDetails, mobileNumber: e.target.value });
+        }}
+        label="Mobile Number"
+        variant="outlined"
+        type="number"
+        disabled={!editDetails}
+      />
+
+      <br />
+      <br />
+
+      <FormControl fullWidth>
+        <FormLabel
+          id="gender-radio-group-label"
+          sx={{
+            textAlign: "left",
           }}
         >
-          {loading ? "Please wait" : editDetails ? "Cancel" : "Edit Details"}
+          Gender
+        </FormLabel>
+        <RadioGroup
+          aria-labelledby="gender-radio-group-label"
+          value={userDetails?.gender}
+          name="radio-buttons-group"
+          row
+          onChange={(e) => {
+            setUserDetails({ ...userDetails, gender: e.target.value });
+          }}
+        >
+          <FormControlLabel
+            disabled={!editDetails}
+            value="male"
+            control={<Radio />}
+            label="Male"
+          />
+          <FormControlLabel
+            disabled={!editDetails}
+            value="female"
+            control={<Radio />}
+            label="Female"
+          />
+          <FormControlLabel
+            disabled={!editDetails}
+            value="other"
+            control={<Radio />}
+            label="Other"
+          />
+        </RadioGroup>
+      </FormControl>
+
+      <br />
+      <br />
+
+      {editDetails ? (
+        <Button
+          fullWidth
+          sx={{
+            marginBottom: "5px",
+          }}
+          variant="contained"
+          type="submit"
+          disabled={loading}
+        >
+          {loading ? "Please wait" : "Save"}
         </Button>
-      </form>
-    </>
+      ) : null}
+
+      <Button
+        fullWidth
+        variant="contained"
+        color={editDetails ? "error" : "success"}
+        disabled={loading}
+        onClick={(e) => {
+          setEditDetails(!editDetails);
+        }}
+      >
+        {loading ? "Please wait" : editDetails ? "Cancel" : "Edit Details"}
+      </Button>
+    </form>
   );
 }

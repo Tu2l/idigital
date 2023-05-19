@@ -18,6 +18,7 @@ public class Product {
 	private Long productId;
 	private Integer quantity;
 	private Double price;
+	
 	@ToString.Exclude
 	@ManyToOne
 	@JoinColumn(name = "orderId")

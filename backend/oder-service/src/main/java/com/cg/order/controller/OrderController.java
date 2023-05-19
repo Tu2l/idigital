@@ -19,7 +19,7 @@ import com.cg.order.util.ResponseUtil;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/order")
 public class OrderController {
 	private static final String BASE_URL = "/api/order";
 	@Autowired
@@ -27,6 +27,11 @@ public class OrderController {
 	@Autowired
 	private ResponseUtil responseUtil;
 
+	@GetMapping
+	public ResponseEntity<?> get() {
+		return responseUtil.createSuccessResponse(service.get(), BASE_URL, HttpStatus.OK);
+	}
+	
 	@GetMapping("/{orderId}")
 	public ResponseEntity<?> get(@PathVariable Long orderId) {
 		return responseUtil.createSuccessResponse(service.get(orderId), BASE_URL + "/" + orderId, HttpStatus.OK);

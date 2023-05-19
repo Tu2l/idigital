@@ -19,14 +19,14 @@ import {
   updateCategory,
 } from "../../connections/category";
 import { AuthContext } from "../../contexts/AuthContext";
+import { NavContext } from "../../contexts/NavContext";
 
 export default function Category() {
   const [category, setCategory] = useState("");
-  const [alert, setAlert] = useState({});
-  const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [updateCatId, setUpdateCatId] = useState("");
 
+  const { loading, setLoading, alert, setAlert } = useContext(NavContext);
   const { authToken } = useContext(AuthContext);
 
   const handleCategoryChange = (e) => setCategory(e.target.value);
@@ -133,11 +133,6 @@ export default function Category() {
 
   return (
     <>
-      {alert.message ? (
-        <>
-          <Alert severity={alert.severity}>{alert.message}</Alert> <br />
-        </>
-      ) : null}
       <Grid container alignContent={"center"} justifyContent={"center"}>
         <Grid
           item

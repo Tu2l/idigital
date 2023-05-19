@@ -47,4 +47,9 @@ public class RemoteUploadController {
 		return new ResponseEntity<>(service.getFile(fileName), HttpStatus.OK);
 	}
 
+	@PostMapping("/rename/{originalName}/{newName}")
+	public ResponseEntity<?> rename(@PathVariable String originalName, @PathVariable String newName) {
+		return new ResponseEntity<>(service.rename(originalName, newName), HttpStatus.CREATED);
+	}
+
 }

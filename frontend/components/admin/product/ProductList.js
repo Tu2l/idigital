@@ -9,20 +9,40 @@ import {
   TableHead,
   TableRow,
   TableBody,
-  Alert,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getCategories } from "../../../connections/category";
-import { deleteProduct, getProducts } from "../../../connections/product";
+import { deleteProduct, getProductsBy } from "../../../connections/product";
+import { NavContext } from "../../../contexts/NavContext";
 
 export default function ProductList({ callback, authToken }) {
+  const { alert, setAlert, loading, setLoading } = useContext(NavContext);
+
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [alert, setAlert] = useState({});
+  const [orderBy, setOrderBy] = useState("ASC");
+  const [sortBy, setSortBy] = useState("title");
+  const [query, setQuery] = useState("");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+
+  const handleQueryChange = (e) => setQuery(e.target.value);
+  const handleOrderByChange = (e) => setOrderBy(e.target.value);
+  const handleSortByChange = (e) => setSortBy(e.target.value);
 
   const handleUpdateClick = (productDetails) =>
     callback("update", productDetails);
+
+  const filterByQuery = () => {
+    setLoading(true);
+    setFilteredProducts(
+      products.filter((ad) => ad.title.toLowerCase().includes(query))
+    );
+    setLoading(false);
+  };
 
   const handleDeleteProduct = (productId) => {
     deleteProduct(
@@ -47,15 +67,39 @@ export default function ProductList({ callback, authToken }) {
   };
 
   useEffect(() => {
+    filterByQuery();
+  }, [query]);
+
+  useEffect(() => {
     setLoading(true);
-    getCategories(
-      { authToken },
+    if (categories.length === 0) {
+      getCategories(
+        { authToken },
+        {
+          success: (res) => {
+            setLoading(false);
+            const data = res.data.data;
+            setCategories(data);
+          },
+          error: (err) => {
+            setLoading(false);
+            const msg = err?.response?.data?.message;
+            setAlert({
+              severity: "error",
+              message: msg ? msg : err.message,
+            });
+          },
+        }
+      );
+    }
+
+    getProductsBy(
+      { order: orderBy, sort: sortBy },
       {
         success: (res) => {
-          setLoading(false);
           const data = res.data.data;
-          setCategories(data);
-          // console.log(categories[0]);
+          setLoading(false);
+          setProducts(data);
         },
         error: (err) => {
           setLoading(false);
@@ -64,72 +108,132 @@ export default function ProductList({ callback, authToken }) {
             severity: "error",
             message: msg ? msg : err.message,
           });
+
+          console.log(msg ? msg : err.message);
         },
       }
     );
+  }, [sortBy, orderBy]);
 
-    getProducts({
-      success: (res) => {
-        const data = res.data.data;
-        // console.log(data);
-        setLoading(false);
-        setProducts(data);
-      },
-      error: (err) => {
-        setLoading(false);
-        const msg = err?.response?.data?.message;
-        setAlert({
-          severity: "error",
-          message: msg ? msg : err.message,
-        });
+  const component = (row, i) => (
+    <TableRow
+      key={row.productId}
+      sx={{
+        "&:last-child td, &:last-child th": { border: 0 },
+      }}
+    >
+      <TableCell component="th" scope="row">
+        {i + 1}
+      </TableCell>
+      <TableCell component="th" scope="row">
+        {row.productId}
+      </TableCell>
+      <TableCell align="left">{row.title}</TableCell>
+      <TableCell align="center">{row.price}</TableCell>
+      <TableCell align="center">{row.stock}</TableCell>
+      <TableCell align="center">
+        {categories.find((cat) => cat.categoryId === row.categoryId)?.name}
+      </TableCell>
+      <TableCell align="center">{row.updatedAt?.split("T")[0]}</TableCell>
+      <TableCell align="right">
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={(e) => handleDeleteProduct(row.productId)}
+        >
+          Delete
+        </Button>
+        &nbsp;
+        <Button
+          variant="outlined"
+          color="warning"
+          onClick={(e) => {
+            handleUpdateClick(row);
+          }}
+        >
+          Update
+        </Button>
+        &nbsp;
+        <Button
+          variant="outlined"
+          color="success"
+          component="a"
+          target="_blank"
+          href={`http://localhost:3000/view/product/${row.productId}`}
+        >
+          View
+        </Button>
+      </TableCell>
+    </TableRow>
+  );
 
-        console.log(msg ? msg : err.message);
-      },
-    });
-  }, []);
   return (
     <>
-      {alert.message ? (
-        <>
-          <Alert severity={alert.severity}>{alert.message}</Alert> <br />
-        </>
-      ) : null}
       <Grid container alignContent={"center"} justifyContent={"center"}>
         <Grid
           item
           xs={12}
           sm={12}
-          md={12}
-          lg={12}
+          md={6}
+          lg={6}
           style={{
             display: "flex",
-            padding: "5px",
-            marginBottom: "10px",
-            width: "100%",
+            justifyContent: "flex-end",
           }}
         >
           <TextField
             fullWidth
-            // value={category}
-            // onChange={handleCategoryChange}
             label="Search"
             variant="outlined"
-            placeholder="Search product"
+            placeholder="Search"
             type="text"
-            // required
-            // disabled={!editAddress}
-            sx={{ margin: "1px" }}
+            value={query}
+            onChange={handleQueryChange}
           />
-
-          <Button
-            variant="outlined"
-            sx={{ margin: "1px" }}
-            // onClick={handleAddCategory}
-            disabled={loading}
-          >
-            {loading ? "Please wait" : "Search"}
-          </Button>
         </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={6}
+          lg={6}
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <FormControl>
+            <InputLabel id="status-select-label">Sort By</InputLabel>
+            <Select
+              labelId="status-select-label"
+              id="status-select"
+              value={sortBy}
+              label="Sort By"
+              onChange={handleSortByChange}
+              disabled={loading}
+            >
+              <MenuItem value="title">Title</MenuItem>
+              <MenuItem value="price">Price</MenuItem>
+              <MenuItem value="updatedAt">Updated At</MenuItem>
+            </Select>
+          </FormControl>
+          &nbsp;
+          <FormControl>
+            <InputLabel id="status-select-label">Order by</InputLabel>
+            <Select
+              labelId="status-select-label"
+              id="status-select"
+              value={orderBy}
+              label="order By"
+              onChange={handleOrderByChange}
+              disabled={loading}
+            >
+              <MenuItem value="ASC">ASC</MenuItem>
+              <MenuItem value="DESC">DESC</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        &nbsp;
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <TableContainer container={Paper}>
             <Table sx={{ minWidth: "100%" }} aria-label="Products table">
@@ -162,63 +266,9 @@ export default function ProductList({ callback, authToken }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {products.map((row, i) => (
-                  <TableRow
-                    key={row.productId}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                    }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {i + 1}
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {row.productId}
-                    </TableCell>
-                    <TableCell align="left">{row.title}</TableCell>
-                    <TableCell align="center">{row.price}</TableCell>
-                    <TableCell align="center">{row.stock}</TableCell>
-                    <TableCell align="center">
-                      {
-                        categories.find(
-                          (cat) => cat.categoryId === row.categoryId
-                        )?.name
-                      }
-                    </TableCell>
-                    <TableCell align="center">
-                      {row.updatedAt?.split("T")[0]}
-                    </TableCell>
-                    <TableCell align="right">
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={(e) => handleDeleteProduct(row.productId)}
-                      >
-                        Delete
-                      </Button>
-                      &nbsp;
-                      <Button
-                        variant="outlined"
-                        color="warning"
-                        onClick={(e) => {
-                          handleUpdateClick(row);
-                        }}
-                      >
-                        Update
-                      </Button>
-                      &nbsp;
-                      <Button variant="outlined" color="success" component="a">
-                        <a
-                          style={{ textDecoration: "none" }}
-                          target="_blank"
-                          href={`http://localhost:3000/view/product/${row.productId}`}
-                        >
-                          View
-                        </a>
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {query
+                  ? filteredProducts.map(component)
+                  : products.map(component)}
               </TableBody>
             </Table>
           </TableContainer>

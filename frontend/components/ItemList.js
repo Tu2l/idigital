@@ -1,15 +1,34 @@
 import { Grid, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import ItemCard from "./ItemCard";
 import { getProducts } from "../connections/product";
+import { NavContext } from "../contexts/NavContext";
 
 export default function ItemList({ callback }) {
-  const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState([]);
+  const [filteredList, setFilteredList] = useState([]);
+  const { searchQuery, loading, setLoading, setAlert } = useContext(NavContext);
+
+  const filterProductsByQuery = () => {
+    setLoading(true);
+    if (searchQuery)
+      setFilteredList(
+        products?.filter((prod) =>
+          prod.title.toLowerCase().includes(searchQuery?.toLowerCase())
+        )
+      );
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    filterProductsByQuery();
+  }, [searchQuery]);
 
   useEffect(() => {
     setLoading(true);
+    setAlert({});
+
     getProducts({
       success: (res) => {
         const data = res.data.data;
@@ -30,6 +49,12 @@ export default function ItemList({ callback }) {
     });
   }, []);
 
+  const component = (product) => (
+    <Grid key={product.productId} item xs={6} sm={4} md={3} lg={3}>
+      <ItemCard product={product} callback={callback} />
+    </Grid>
+  );
+
   return (
     <Grid
       container
@@ -46,12 +71,10 @@ export default function ItemList({ callback }) {
             Loading please wait
           </Typography>
         </Grid>
+      ) : searchQuery ? (
+        filteredList.map(component)
       ) : (
-        products.map((product) => (
-          <Grid key={product.productId} item xs={6} sm={4} md={3} lg={3}>
-            <ItemCard product={product} callback={callback} />
-          </Grid>
-        ))
+        products.map(component)
       )}
     </Grid>
   );

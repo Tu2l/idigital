@@ -101,6 +101,8 @@ export default function Sell({ authToken }) {
                     message: msg ? msg : err.message,
                   });
                   setLoading(false);
+
+                  console.log(err);
                 },
               }
             );

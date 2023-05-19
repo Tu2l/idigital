@@ -10,13 +10,13 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { NAV_CLICK_ACTION } from "../../nav-actions";
 import { register } from "../../connections/login-register";
+import { NavContext } from "../../contexts/NavContext";
 
 export default function Register({ callback }) {
-  const [alert, setAlert] = useState({});
-  const [loading, setLoading] = useState(false);
+  const { loading, setLoading, alert, setAlert } = useContext(NavContext);
   const [userDetails, setUserDetails] = useState({
     emailId: "",
     firstName: "",
@@ -54,17 +54,12 @@ export default function Register({ callback }) {
 
     const resCallback = {
       success: (res) => {
-        // setLoading(false);
-        // localStorage.setItem("user", res.data.data);
-
         setAlert({
           severity: "success",
           message: "Registered successfully",
         });
 
         setTimeout(handleLoginClick, 500);
-
-        // handleLoginClick();
       },
       error: (error) => {
         const msg = error?.response?.data?.message;
@@ -103,12 +98,6 @@ export default function Register({ callback }) {
           >
             REGISTER
           </Typography>
-
-          {alert.message ? (
-            <>
-              <Alert severity={alert.severity}>{alert.message}</Alert> <br />
-            </>
-          ) : null}
 
           <TextField
             fullWidth

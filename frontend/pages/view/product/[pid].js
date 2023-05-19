@@ -12,10 +12,11 @@ import { AuthContext } from "../../../contexts/AuthContext";
 export default function ViewProduct() {
   const { authToken } = useContext(AuthContext);
 
-  const router = useRouter();
   const [product, setProduct] = useState({});
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState("");
+
+  const router = useRouter();
   const pid = router.query.pid;
 
   useEffect(() => {
@@ -55,6 +56,7 @@ export default function ViewProduct() {
         success: (res) => {
           const data = res.data.data;
           setImages(data.urls);
+          console.log(data);
         },
         error: (err) => {},
       }

@@ -8,28 +8,38 @@ import { NavContext } from "../contexts/NavContext";
 
 export default function MyApp({ Component, pageProps }) {
   const [authToken, setAuthToken] = useState("");
-  const [navAction, setNavAction] = useState(null);
+  const [userId, setUserId] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+
+  const [navAction, setNavAction] = useState(null);
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const setAdmin = () => {
+    const role = localStorage.getItem("role");
+    setIsAdmin(role && role === "ADMIN");
+  };
 
   const setLogin = (data) => {
     // console.log(data);
     if (data.token && data.userid) {
       localStorage.setItem("userId", data.userid);
       localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+      setAdmin();
       setAuthToken(data.token);
       return;
     }
 
+    localStorage.removeItem("userId");
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    setAuthToken(null);
     logout(
       { authToken },
       {
-        success: (res) => {
-          localStorage.removeItem("userId");
-          localStorage.removeItem("token");
-          setAuthToken(null);
-        },
+        success: (res) => {},
         error: (err) => {
           console.log(err);
         },
@@ -37,23 +47,35 @@ export default function MyApp({ Component, pageProps }) {
     );
   };
 
+  const authValues = {
+    authToken,
+    setAuthToken,
+    setLogin,
+    userId,
+    setUserId,
+    isAdmin,
+    setAdmin,
+  };
   const navValues = {
     navAction,
     setNavAction,
-    isAdmin,
-    setIsAdmin,
     loading,
     setLoading,
     alert,
     setAlert,
+
+    searchQuery,
+    setSearchQuery,
   };
 
   useEffect(() => {
     setAuthToken(localStorage.getItem("token"));
+    setUserId(localStorage.getItem("userId"));
+    setAdmin();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ authToken, setAuthToken, setLogin }}>
+    <AuthContext.Provider value={authValues}>
       <NavContext.Provider value={navValues}>
         <CssBaseline />
         <Navbar />

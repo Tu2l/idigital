@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.cg.ads.entity.AdStatus;
 import com.cg.ads.entity.ProductAd;
 
 @Repository
@@ -26,4 +27,24 @@ public interface ProductAdRepo extends JpaRepository<ProductAd, Long> {
 	List<ProductAd> findAllByOrderByPriceDesc(Pageable pageable);
 
 	List<ProductAd> findByUserId(Long userId, Pageable pageable);
+	
+	List<ProductAd> findByTitleContainingIgnoreCase(String title);
+
+	List<ProductAd> findAllByOrderByTitleAsc();
+
+	List<ProductAd> findAllByOrderByUpdatedAtAsc();
+
+	List<ProductAd> findAllByOrderByPriceAsc();
+
+	List<ProductAd> findAllByOrderByTitleDesc();
+
+	List<ProductAd> findAllByOrderByUpdatedAtDesc();
+
+	List<ProductAd> findAllByOrderByPriceDesc();
+
+	List<ProductAd> findByUserId(Long userId );
+	
+	List<ProductAd> findByStatus(AdStatus status);
+	
+	List<ProductAd> findByStatus(AdStatus status, Pageable pageable);
 }
