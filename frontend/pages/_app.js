@@ -22,8 +22,12 @@ export default function MyApp({ Component, pageProps }) {
   };
 
   const setLogin = (data) => {
-    // console.log(data);
+    console.log(data);
     if (data.token && data.userid) {
+      localStorage.removeItem("userId");
+      localStorage.removeItem("token");
+      localStorage.removeItem("role");
+
       localStorage.setItem("userId", data.userid);
       localStorage.setItem("token", data.token);
       localStorage.setItem("role", data.role);

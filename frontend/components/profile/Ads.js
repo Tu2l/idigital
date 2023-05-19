@@ -21,8 +21,8 @@ import { getCategories } from "../../connections/category";
 import { AuthContext } from "../../contexts/AuthContext";
 import { NavContext } from "../../contexts/NavContext";
 
-export default function Ads() {
-  const { authToken, userId } = useContext(AuthContext);
+export default function Ads({ userId }) {
+  const { authToken } = useContext(AuthContext);
   const { loading, setLoading, setAlert } = useContext(NavContext);
   const [ads, setAds] = useState([]);
   const [categories, setCategories] = useState([]);
