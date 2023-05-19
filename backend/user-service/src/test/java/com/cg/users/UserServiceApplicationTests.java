@@ -1,10 +1,10 @@
-package com.cg.ps;
+package com.cg.users;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ProductServiceApplicationTests {
+class UserServiceApplicationTests {
 
 	@Test
 	void contextLoads() {

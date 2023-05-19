@@ -10,7 +10,7 @@ import { AuthContext } from "../../../contexts/AuthContext";
 import { NavContext } from "../../../contexts/NavContext";
 
 export default function ViewProduct() {
-  const { authToken } = useContext(AuthContext);
+  const { authToken, setAdmin } = useContext(AuthContext);
 
   const router = useRouter();
   const [ad, setAd] = useState({});
@@ -19,9 +19,10 @@ export default function ViewProduct() {
   const aid = router.query.aid;
 
   useEffect(() => {
-    if (!aid) return;
+    setAdmin();
 
-    console.log(aid);
+    if (!aid) return;
+    // console.log(aid);
 
     getAd(
       { authToken, aid },

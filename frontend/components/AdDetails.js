@@ -1,6 +1,6 @@
 import { Grid, Box, Typography, Button } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Carousel from "react-material-ui-carousel";
 import { acceptAd, rejectAd } from "../connections/ads";
 import { AuthContext } from "../contexts/AuthContext";
@@ -45,6 +45,10 @@ export default function AdDetails({ authToken, ad, images, category }) {
     setAlert({});
     rejectAd({ authToken, adId: ad.adId }, resCallback);
   };
+
+  useEffect(() => {
+    console.log(isAdmin);
+  }, []);
 
   return (
     <>
@@ -92,7 +96,7 @@ export default function AdDetails({ authToken, ad, images, category }) {
               &#8377;{ad.price}
             </Typography>
 
-            {!authToken && !isAdmin ? (
+            {!authToken || !isAdmin ? (
               <Typography
                 gutterBottom
                 variant="overline"

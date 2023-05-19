@@ -16,15 +16,18 @@ import { getOrders } from "../../connections/order";
 import { AuthContext } from "../../contexts/AuthContext";
 import { NavContext } from "../../contexts/NavContext";
 
-export default function Order() {
+export default function Order({ userId }) {
   const { setLoading, setAlert } = useContext(NavContext);
-  const { authToken, userId } = useContext(AuthContext);
+  const { authToken } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
     setLoading(true);
     setAlert({});
+
+    console.log(userId);
+
     getOrders(
       { authToken, userId },
       {
@@ -57,9 +60,7 @@ export default function Order() {
               <TableCell>
                 <b>Order Id</b>
               </TableCell>
-              <TableCell align="left">
-                <b>User Id</b>
-              </TableCell>
+
               <TableCell align="center">
                 <b>Total Price (&#8377;)</b>
               </TableCell>
@@ -85,7 +86,6 @@ export default function Order() {
               <TableRow key={order.orderId}>
                 <TableCell>{i + 1}</TableCell>
                 <TableCell>{order.orderId}</TableCell>
-                <TableCell align="left">{order.userId}</TableCell>
                 <TableCell align="center">{order.totalPrice}</TableCell>
                 <TableCell align="center">{order.products.length}</TableCell>
                 <TableCell align="center">{order.deliveryDate}</TableCell>

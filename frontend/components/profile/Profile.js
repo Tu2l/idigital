@@ -44,12 +44,12 @@ export default function Profile({ callback }) {
 
       case MENU_ACTIONS.ORDERS:
         if (gridSize !== 12) setGridSize(12);
-        setComponent(<Order />);
+        setComponent(<Order userId={userId} />);
         break;
 
       case MENU_ACTIONS.ADS:
         if (gridSize !== 12) setGridSize(12);
-        setComponent(<Ads />);
+        setComponent(<Ads userId={userId} />);
         break;
     }
   };
