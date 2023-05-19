@@ -18,11 +18,9 @@ public class OrderDto {
 	private Long userId;
 	@JsonProperty(access = Access.READ_ONLY)
 	private Double totalPrice;
-	private OrderStatus status = OrderStatus.PENDING;
+	private OrderStatus status;
 	private LocalDate deliveryDate;
-	private List<ProductDto> products = new ArrayList<>();
 	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDate updatedAt;
-	@JsonProperty(access = Access.READ_ONLY)
-	private LocalDate createdAt;
+	private List<ProductDto> products = new ArrayList<>();
 }

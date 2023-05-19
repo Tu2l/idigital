@@ -21,11 +21,6 @@ public class RemoteOrderController {
 	@Autowired
 	private RemoteOrderService service;
 
-	@GetMapping
-	public ResponseEntity<?> get() {
-		return new ResponseEntity<>(service.get(), HttpStatus.OK);
-	}
-
 	@GetMapping("/{orderId}")
 	public ResponseEntity<?> get(@PathVariable Long orderId) {
 		return new ResponseEntity<>(service.get(orderId), HttpStatus.OK);
@@ -38,6 +33,7 @@ public class RemoteOrderController {
 
 	@PostMapping("/{userId}")
 	public ResponseEntity<?> add(@PathVariable Long userId, @RequestBody Object dto) {
+
 		return new ResponseEntity<>(service.add(userId, dto), HttpStatus.OK);
 	}
 

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.ads.dto.ProductAdDto;
-import com.cg.ads.entity.AdStatus;
 import com.cg.ads.service.ProductAdService;
 import com.cg.ads.util.ResponseUtil;
 
@@ -54,11 +53,6 @@ public class ProductAdController {
 	@GetMapping("/{adId}")
 	public ResponseEntity<?> get(@PathVariable Long adId) {
 		return responseUtil.createSuccessResponse(service.get(adId), BASE_URL + "/" + adId, HttpStatus.OK);
-	}	
-	
-	@GetMapping("/status/{status}")
-	public ResponseEntity<?> get(@PathVariable AdStatus status) {
-		return responseUtil.createSuccessResponse(service.get(status), BASE_URL + "/" + status, HttpStatus.OK);
 	}
 
 	@GetMapping("/user/{userId}/{page}")

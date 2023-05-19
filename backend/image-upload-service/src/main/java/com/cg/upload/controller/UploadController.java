@@ -33,12 +33,6 @@ public class UploadController {
 				HttpStatus.CREATED);
 	}
 
-	@PostMapping("/rename/{originalName}/{newName}")
-	public ResponseEntity<?> rename(@PathVariable String originalName, @PathVariable String newName) {
-		return responseUtil.createSuccessResponse(service.rename(originalName, newName),
-				BASE_URL + "/rename/" + originalName + "/" + newName, HttpStatus.CREATED);
-	}
-
 	@DeleteMapping("/filename/{fileName}")
 	public ResponseEntity<?> remove(@PathVariable String fileName) {
 		return responseUtil.createSuccessResponse(service.remove(fileName), BASE_URL + "/" + fileName, HttpStatus.OK);

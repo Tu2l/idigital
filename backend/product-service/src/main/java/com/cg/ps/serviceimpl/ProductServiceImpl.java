@@ -13,14 +13,15 @@ import org.springframework.stereotype.Service;
 import com.cg.ps.dto.ProductCategoryDto;
 import com.cg.ps.dto.ProductDto;
 import com.cg.ps.entity.Product;
+import com.cg.ps.entity.ProductCategory;
 import com.cg.ps.repository.ProductRepo;
 import com.cg.ps.service.ProductCategoryService;
 import com.cg.ps.service.ProductService;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-	private final static String BY_NAME = "title";
-	private final static String BY_DATE = "updatedAt";
+	private final static String BY_NAME = "name";
+	private final static String BY_DATE = "date";
 	private final static String BY_PRICE = "price";
 	private final static int ITEM_PER_PAGE = 20;
 
@@ -39,7 +40,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<ProductDto> get(int page) {
-		Pageable pageable = PageRequest.of(page < 0 ? 1 : page, ITEM_PER_PAGE);
+		Pageable pageable = PageRequest.of(page, ITEM_PER_PAGE);
 		return mapper.map(productRepo.findAll(pageable), new TypeToken<List<ProductDto>>() {
 		}.getType());
 	}
@@ -47,33 +48,22 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<ProductDto> get(String by, String order, int page) {
 		List<Product> products = new ArrayList<>();
-		Pageable pageable = PageRequest.of(page < 0 ? 1 : page, ITEM_PER_PAGE);
+		Pageable pageable = PageRequest.of(page, ITEM_PER_PAGE);
 		boolean asc = order.equalsIgnoreCase("asc");
 		switch (by) {
 		case BY_NAME:
-			if (page < 0)
-				products = asc ? productRepo.findAllByOrderByTitleAsc() : productRepo.findAllByOrderByTitleDesc();
-			else
-				products = asc ? productRepo.findAllByOrderByTitleAsc(pageable)
-						: productRepo.findAllByOrderByTitleDesc(pageable);
+			products = asc ? productRepo.findAllByOrderByTitleAsc(pageable)
+					: productRepo.findAllByOrderByTitleDesc(pageable);
 			break;
 
 		case BY_DATE:
-			if (page < 0)
-				products = asc ? productRepo.findAllByOrderByUpdatedAtAsc()
-						: productRepo.findAllByOrderByUpdatedAtDesc();
-			else
-				products = asc ? productRepo.findAllByOrderByUpdatedAtAsc(pageable)
-						: productRepo.findAllByOrderByUpdatedAtDesc(pageable);
+			products = asc ? productRepo.findAllByOrderByUpdatedAtAsc(pageable)
+					: productRepo.findAllByOrderByUpdatedAtDesc(pageable);
 			break;
 
 		case BY_PRICE:
-			if (page < 0)
-				products = asc ? productRepo.findAllByOrderByPriceAsc()
-						: productRepo.findAllByOrderByPriceDesc();
-			else
-				products = asc ? productRepo.findAllByOrderByPriceAsc(pageable)
-						: productRepo.findAllByOrderByPriceDesc(pageable);
+			products = asc ? productRepo.findAllByOrderByPriceAsc(pageable)
+					: productRepo.findAllByOrderByPriceDesc(pageable);
 			break;
 		}
 		return mapper.map(products, new TypeToken<List<ProductDto>>() {
@@ -82,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<ProductDto> get(String query, int page) {
-		Pageable pageable = PageRequest.of(page < 0 ? 1 : page, ITEM_PER_PAGE);
+		Pageable pageable = PageRequest.of(page, ITEM_PER_PAGE);
 		return mapper.map(productRepo.findByTitleContainingIgnoreCase(query, pageable),
 				new TypeToken<List<ProductDto>>() {
 				}.getType());
@@ -112,7 +102,7 @@ public class ProductServiceImpl implements ProductService {
 
 		if (dto.getStock() != product.getStock())
 			product.setStock(dto.getStock());
-
+		
 		if (dto.getDescription() != null && !product.getDescription().equals(dto.getDescription()))
 			product.setDescription(dto.getDescription());
 

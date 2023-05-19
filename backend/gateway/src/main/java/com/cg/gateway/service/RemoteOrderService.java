@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "order-service", url = "http://localhost:8007/api/order")
 public interface RemoteOrderService {
-	@GetMapping
-	Object get();
-	
 	@GetMapping("/{orderId}")
 	Object get(@PathVariable Long orderId);
 

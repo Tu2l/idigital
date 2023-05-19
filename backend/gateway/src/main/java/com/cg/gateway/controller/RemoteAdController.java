@@ -32,11 +32,6 @@ public class RemoteAdController {
 		return new ResponseEntity<>(service.get(page), HttpStatus.OK);
 	}
 
-	@GetMapping("/status/{status}")
-	public ResponseEntity<?> get(@PathVariable String status) {
-		return new ResponseEntity<>(service.get(status), HttpStatus.OK);
-	}
-	
 	@GetMapping("/search/{query}/{page}")
 	public ResponseEntity<?> get(@PathVariable String query, @PathVariable int page) {
 		return new ResponseEntity<>(service.get(query, page), HttpStatus.OK);

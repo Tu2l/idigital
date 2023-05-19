@@ -43,31 +43,28 @@ public class OrderServiceImpl implements OrderService {
 		if (res.isError())
 			throw new RuntimeException(res.getMessage());
 
-//		System.err.println(dto);
-		
 		// validate product
 		List<Product> products = dto.getProducts().stream().map((prodDto) -> {
-			ResponseObject productRes = productService.get(prodDto.getProductId());
+			ResponseObject productRes = productService.get(prodDto.getId());
 
 			if (productRes.isError())
 				throw new RuntimeException(res.getMessage());
 
-			Map<String, Object> data = (Map) productRes.getData();
+			Map<String, String> data = (Map) productRes.getData();
 
-			int stock = (Integer)(data.get("stock"));
+			int stock = Integer.parseInt(data.get("stock"));
 			if (prodDto.getQuantity() > stock)
 				throw new RuntimeException("Not enough stock for " + data.get("title"));
 
-			Double price = (Double)(data.get("price"));
+			Double price = Double.parseDouble(data.get("price"));
 			prodDto.setPrice(price);
-			
-			return mapper.map(prodDto, Product.class);
+
+			return mapper.map(dto, Product.class);
 
 		}).collect(Collectors.toList());
 
-		Order order = new Order();
+		Order order = mapper.map(dto, Order.class);
 		order.setProducts(products);
-		order.setUserId(dto.getUserId());
 
 		// generate delivery date
 		Calendar cal = Calendar.getInstance();
@@ -98,14 +95,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<OrderDto> getByUser(Long userId) {
 		List<Order> orders = repo.findByUserId(userId);
-		return mapper.map(orders, new TypeToken<List<OrderDto>>() {
-		}.getType());
-	}
-	
-	@Override
-	public List<OrderDto> get(){
-		List<Order> orders = repo.findAll();
-		return mapper.map(orders, new TypeToken<List<OrderDto>>() {
+		return mapper.map(orders, new TypeToken<List<Order>>() {
 		}.getType());
 	}
 

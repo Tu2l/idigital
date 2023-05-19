@@ -73,17 +73,6 @@ public class UploadUtil {
 			return false;
 		}
 	}
-	
-	public void rename(String original, String newName) {
-	
-		Path originalFile = Paths.get(ROOT_DIR + original);
-		try {
-			Files.copy(originalFile,originalFile.resolve(newName));
-		} catch (IOException e) {
-			throw new RuntimeException("Something went wrong");
-		}
-		
-	}
 
 	boolean validateImageExtension(String ext) {
 		String regex = "(jpe?g|png|gif|bmp)";

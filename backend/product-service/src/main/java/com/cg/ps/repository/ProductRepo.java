@@ -26,18 +26,4 @@ public interface ProductRepo extends JpaRepository<Product, Long> {
 	List<Product> findAllByOrderByUpdatedAtDesc(Pageable pageable);
 
 	List<Product> findAllByOrderByPriceDesc(Pageable pageable);
-
-	List<Product> findByTitleContainingIgnoreCase(String title);
-
-	List<Product> findAllByOrderByTitleAsc();
-
-	List<Product> findAllByOrderByUpdatedAtAsc();
-
-	List<Product> findAllByOrderByPriceAsc();
-
-	List<Product> findAllByOrderByTitleDesc();
-
-	List<Product> findAllByOrderByUpdatedAtDesc();
-
-	List<Product> findAllByOrderByPriceDesc();
 }

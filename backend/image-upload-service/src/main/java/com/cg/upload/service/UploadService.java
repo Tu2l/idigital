@@ -12,6 +12,4 @@ public interface UploadService {
 	Object get(String ownerId);
 	
 	Object getFile(String fileName);
-	
-	Object rename(String original, String newName);
 }
