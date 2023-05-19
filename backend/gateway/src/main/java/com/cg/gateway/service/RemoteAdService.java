@@ -23,7 +23,10 @@ public interface RemoteAdService {
 	Object get(@PathVariable String by, @PathVariable String order, @PathVariable int page);
 
 	@GetMapping("/{adId}")
-	Object get(@PathVariable Long adId);
+	Object get(@PathVariable Long adId);	
+	
+	@GetMapping("/status/{status}")
+	Object get(@PathVariable String status);
 
 	@GetMapping("/user/{userId}/{page}")
 	Object get(@PathVariable Long userId, @PathVariable int page);

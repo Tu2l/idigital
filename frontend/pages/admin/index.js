@@ -19,20 +19,21 @@ export const ADMIN_MENU_ACTIONS = {
 };
 
 export default function Admin() {
-  const { setIsAdmin } = useContext(NavContext);
-  const { authToken } = useContext(AuthContext);
+  const { authToken, isAdmin } = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {
-    document.title = "Buy Sell Trade:Admin";
-    setIsAdmin(true);
+    // console.log(authToken, isAdmin);
 
-    if (authToken) router.push(`${router.pathname}/dashboard`);
-  }, [authToken]);
+    document.title = "Buy Sell Trade:Admin";
+    if (authToken && isAdmin) router.push(`${router.pathname}/dashboard`);
+  }, [authToken, isAdmin]);
 
   return (
     <>
-      <Container maxWidth="lg">{!authToken ? <Login /> : null}</Container>
+      <Container maxWidth="lg">
+        {!authToken || !isAdmin ? <Login /> : null}
+      </Container>
     </>
   );
 }

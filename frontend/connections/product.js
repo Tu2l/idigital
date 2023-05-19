@@ -38,3 +38,10 @@ export const deleteProduct = ({ authToken, productId }, callback) => {
     .then((res) => callback?.success(res))
     .catch((err) => callback?.error(err));
 };
+
+export const getProductsBy = ({ order, sort, page = -1 }, callback) => {
+  axios
+    .get(BASE_API_URL + `product/sort/${sort}/${order}/${page}`)
+    .then((res) => callback?.success(res))
+    .catch((err) => callback?.error(err));
+};

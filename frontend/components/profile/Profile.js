@@ -4,6 +4,8 @@ import { NAV_CLICK_ACTION } from "../../nav-actions";
 import { AuthContext } from "../../contexts/AuthContext";
 import AddressForm from "./AddressForm";
 import BasicDetailsForm from "./BasicDetailsForm";
+import Ads from "./Ads";
+import Order from "./Order";
 
 export default function Profile({ callback }) {
   const MENU_ACTIONS = {
@@ -13,12 +15,14 @@ export default function Profile({ callback }) {
     ADS: "ads",
   };
 
-  const { authToken } = useContext(AuthContext);
-  const userId = localStorage.getItem("userId");
+  const { authToken, userId } = useContext(AuthContext);
 
-  if (!userId || !authToken) callback(NAV_CLICK_ACTION.LOGIN);
+  // if (!userId || !authToken) callback(NAV_CLICK_ACTION.LOGIN);
+
+  // console.log(userId, authToken);
 
   const [selected, setSelected] = useState(MENU_ACTIONS.BASIC_DETAILS);
+  const [gridSize, setGridSize] = useState(5);
   const [component, setComponent] = useState(
     <BasicDetailsForm authToken={authToken} userId={userId} />
   );
@@ -27,33 +31,25 @@ export default function Profile({ callback }) {
     setSelected(action);
     switch (action) {
       case MENU_ACTIONS.BASIC_DETAILS:
+        if (gridSize !== 5) setGridSize(5);
         setComponent(
           <BasicDetailsForm authToken={authToken} userId={userId} />
         );
         break;
 
       case MENU_ACTIONS.ADDRESS:
+        if (gridSize !== 5) setGridSize(5);
         setComponent(<AddressForm authToken={authToken} userId={userId} />);
         break;
 
       case MENU_ACTIONS.ORDERS:
-        setComponent(
-          <>
-            <h3 authToken={authToken} userId={userId}>
-              Orders
-            </h3>
-          </>
-        );
+        if (gridSize !== 12) setGridSize(12);
+        setComponent(<Order />);
         break;
 
       case MENU_ACTIONS.ADS:
-        setComponent(
-          <>
-            <h3 authToken={authToken} userId={userId}>
-              Ads
-            </h3>
-          </>
-        );
+        if (gridSize !== 12) setGridSize(12);
+        setComponent(<Ads />);
         break;
     }
   };
@@ -121,7 +117,7 @@ export default function Profile({ callback }) {
           </Button>
         </Container>
       </Grid>
-      <Grid style={gridStyle} item xs={12} sm={12} md={5} lg={5}>
+      <Grid style={gridStyle} item xs={12} sm={12} md={gridSize} lg={gridSize}>
         {component}
       </Grid>
     </Grid>

@@ -26,6 +26,7 @@ export default function Login() {
     const handleCallback = {
       success: (res) => {
         setLoading(false);
+        res.data.data.role = "ADMIN";
         setLogin(res.data.data);
       },
       error: (err) => {

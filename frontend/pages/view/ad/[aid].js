@@ -1,20 +1,16 @@
-import { Button } from "@mui/material";
 import { Container } from "@mui/system";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import AdDetails from "../../../components/AdDetails";
 import BackButton from "../../../components/BackButton";
-import ItemDetails from "../../../components/ItemDetails";
 import { getAd } from "../../../connections/ads";
 import { getCategory } from "../../../connections/category";
-import { getProduct } from "../../../connections/product";
 import { getImages } from "../../../connections/upload-image";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { NavContext } from "../../../contexts/NavContext";
 
 export default function ViewProduct() {
   const { authToken } = useContext(AuthContext);
-  const { setIsAdmin } = useContext(NavContext);
 
   const router = useRouter();
   const [ad, setAd] = useState({});
@@ -23,8 +19,6 @@ export default function ViewProduct() {
   const aid = router.query.aid;
 
   useEffect(() => {
-    // setIsAdmin(true);
-
     if (!aid) return;
 
     console.log(aid);

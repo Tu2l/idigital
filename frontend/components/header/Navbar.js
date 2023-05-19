@@ -6,9 +6,8 @@ import AdminToolbar from "../admin/AdminToolbar";
 import UserToolbar from "./UserToolbar";
 
 export default function Navbar() {
-  const { authToken } = useContext(AuthContext);
-  const { navAction, setNavAction, isAdmin, loading, alert } =
-    useContext(NavContext);
+  const { authToken, isAdmin } = useContext(AuthContext);
+  const { navAction, setNavAction, loading, alert } = useContext(NavContext);
 
   return (
     <Box sx={{ marginBottom: "2%" }}>

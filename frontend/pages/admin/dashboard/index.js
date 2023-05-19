@@ -3,7 +3,6 @@ import { Container, textAlign } from "@mui/system";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
-import { NavContext } from "../../../contexts/NavContext";
 
 const navigations = [
   {
@@ -34,21 +33,19 @@ const navigations = [
 
 export default function index() {
   const router = useRouter();
-  const { authToken } = useContext(AuthContext);
-  const { setIsAdmin } = useContext(NavContext);
+  const { authToken, isAdmin } = useContext(AuthContext);
 
   useEffect(() => {
-    setIsAdmin(true);
     document.title = "Admin Dashboard";
 
-    if (!authToken) router.push(`${router.basePath}/admin`);
+    if (!authToken || !isAdmin) router.push(`${router.basePath}/admin`);
 
-    // console.log("Dashboard", authToken);
-  }, [authToken]);
+    // console.log(isAdmin, authToken);
+  }, [authToken, isAdmin]);
 
   return (
     <>
-      {authToken ? (
+      {authToken && isAdmin ? (
         <Container>
           <Grid
             container
@@ -98,7 +95,7 @@ export default function index() {
           </Grid>
         </Container>
       ) : (
-        <div>You are not authorized {authToken}</div>
+        <div>You are not authorized</div>
       )}
       ;
     </>

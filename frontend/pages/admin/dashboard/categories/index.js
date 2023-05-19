@@ -7,17 +7,17 @@ import { AuthContext } from "../../../../contexts/AuthContext";
 import Category from "../../../../components/admin/Category";
 
 export default function index() {
-  const { authToken } = useContext(AuthContext);
+  const { authToken, isAdmin } = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {
-    document.title = "Adim: Categories";
-    if (!authToken) router.push(`${router.basePath}/admin`);
+    document.title = "Admin: Categories";
+    if (!authToken || !isAdmin) router.push(`${router.basePath}/admin`);
   }, [authToken]);
 
   return (
     <>
-      {authToken ? (
+      {authToken && isAdmin ? (
         <Container>
           <BackButton />
           <Category />

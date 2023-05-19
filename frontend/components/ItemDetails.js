@@ -1,14 +1,18 @@
 import { Grid, Box, Typography, Button } from "@mui/material";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 import Carousel from "react-material-ui-carousel";
 
 export default function ItemDetails({ authToken, product, images, category }) {
+  const router = useRouter();
+
   const typoStyle = {
     padding: "10px",
     border: "solid",
     borderWidth: "thin",
     borderColor: "black",
   };
+
   return (
     <>
       <Grid container>
@@ -30,21 +34,22 @@ export default function ItemDetails({ authToken, product, images, category }) {
         </Grid>
 
         <Grid item xs={12} sm={12} md={6} lg={6}>
-          <Box sx={{ padding: "10px", marginLeft: "10px" }}>
-            <Typography gutterBottom align="left" variant="h3">
-              {product.title}
-            </Typography>
-            <br />
-            <Typography align="left" variant="p" sx={typoStyle}>
-              <strong>{category} </strong>
-            </Typography>
-            <br />
-            <br />
-            <Typography gutterBottom align="left" variant="p" sx={typoStyle}>
-              {product.description}
-            </Typography>
-            <br />
-            <br />
+          <Box sx={typoStyle}>
+            <Box sx={typoStyle}>
+              <Typography gutterBottom align="left" variant="h3">
+                {product.title}
+              </Typography>
+            </Box>
+            <Box sx={typoStyle}>
+              <Typography gutterBottom align="left" variant="p">
+                <strong>{category} </strong>
+              </Typography>
+            </Box>
+            <Box sx={typoStyle}>
+              <Typography gutterBottom align="left" variant="p">
+                {product.description}
+              </Typography>
+            </Box>
             <Typography
               gutterBottom
               variant="h3"
@@ -63,11 +68,17 @@ export default function ItemDetails({ authToken, product, images, category }) {
                 You need to <strong>Login</strong> to Buy or Add to cart
               </Typography>
             ) : null}
-            <Button variant="contained" disabled={!authToken}>
+            {/* <Button variant="contained" disabled={!authToken}>
               Add to Cart
-            </Button>
+            </Button> */}
             &nbsp;
-            <Button variant="contained" disabled={!authToken}>
+            <Button
+              variant="contained"
+              disabled={!authToken}
+              onClick={(e) =>
+                router.push(`${router.basePath}/order/${product.productId}`)
+              }
+            >
               Buy Now
             </Button>
           </Box>

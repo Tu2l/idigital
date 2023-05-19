@@ -2,6 +2,7 @@ package com.cg.ads.dto;
 
 import java.time.LocalDate;
 
+import com.cg.ads.entity.AdStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -33,6 +34,6 @@ public class ProductAdDto {
 	@JsonProperty(access = Access.READ_ONLY)
 	private LocalDate updatedAt;
 	@JsonProperty(access = Access.READ_ONLY)
-	private Boolean accepted;
+	private AdStatus status = AdStatus.PENDING;
 
 }

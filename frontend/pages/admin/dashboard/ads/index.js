@@ -6,17 +6,17 @@ import BackButton from "../../../../components/BackButton";
 import { AuthContext } from "../../../../contexts/AuthContext";
 
 export default function index() {
-  const { authToken } = useContext(AuthContext);
+  const { authToken, isAdmin } = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {
-    document.title = "Adim: Ads";
-    if (!authToken) router.push(`${router.basePath}/admin`);
+    document.title = "Admin: Ads";
+    if (!authToken || !isAdmin) router.push(`${router.basePath}/admin`);
   }, [authToken]);
 
   return (
     <>
-      {authToken ? (
+      {authToken && isAdmin ? (
         <Container>
           <BackButton />
           <AdList />
