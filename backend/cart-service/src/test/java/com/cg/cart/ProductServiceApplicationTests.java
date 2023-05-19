@@ -1,4 +1,4 @@
-package com.cg.ps;
+package com.cg.cart;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
