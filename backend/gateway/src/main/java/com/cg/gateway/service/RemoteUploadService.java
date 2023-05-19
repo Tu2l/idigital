@@ -12,6 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 public interface RemoteUploadService {
 	@PostMapping("/{ownerId}")
 	Object upload(@PathVariable String ownerId, @RequestParam("files") MultipartFile[] files);
+	
+	@PostMapping("/rename/{originalName}/{newName}")
+	Object rename(@PathVariable String originalName, @PathVariable String newName);
 
 	@DeleteMapping("/filename/{fileName}")
 	Object remove(@PathVariable String fileName);
@@ -25,3 +28,4 @@ public interface RemoteUploadService {
 	@GetMapping("/filename/{fileName}")
 	Object getFile(@PathVariable String fileName);
 }
+

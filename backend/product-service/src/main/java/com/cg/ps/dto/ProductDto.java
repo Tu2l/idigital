@@ -16,6 +16,7 @@ public class ProductDto {
 	private Long productId;
 	@NotBlank(message = "Product title must not be blank")
 	private String title;
+	private String description;
 	@Min(message = "Product price must be greater than 0",value = 1)
 	private Double price;
 	private int stock;

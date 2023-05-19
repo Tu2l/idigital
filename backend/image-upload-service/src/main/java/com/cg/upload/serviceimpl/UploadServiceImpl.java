@@ -1,5 +1,6 @@
 package com.cg.upload.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ public class UploadServiceImpl implements UploadService {
 		info.setOwnerId(ownerId);
 
 		for (MultipartFile file : files) {
-			StringBuilder path = new StringBuilder("http://localhost:8004/");
+			StringBuilder path = new StringBuilder("http://localhost:8004/api/");
 			path.append(uploadUtil.prepareImage(file, ownerId));
 			String fileName = path.substring(path.lastIndexOf("/") + 1);
 			info.getUrls().add(path.toString());
@@ -68,7 +69,7 @@ public class UploadServiceImpl implements UploadService {
 	@Override
 	public UploadInfo get(String ownerId) {
 		List<Upload> uploads = repo.findByOwnerId(ownerId);
-
+		
 		if (uploads == null || uploads.size() == 0)
 			throw new RuntimeException("No images found");
 
@@ -93,6 +94,26 @@ public class UploadServiceImpl implements UploadService {
 		uploadInfo.setOwnerId(uploads.get(0).getOwnerId());
 		uploadInfo.setUrls(urls);
 		return uploadInfo;
+	}
+
+	@Override
+	public UploadInfo rename(String original, String newName) {
+//		uploadUtil.rename(original, newName);
+		List<Upload> uploads = repo.findByOwnerId(original);
+		List<Upload> newUploads = new ArrayList<>();
+		uploads.forEach((upload -> {
+			Upload newUpload = new Upload();
+			newUpload.setOwnerId(newName);
+			newUpload.setFileName(upload.getFileName());
+			newUpload.setPath(upload.getPath());
+			newUploads.add(newUpload);
+		}));
+
+		UploadInfo uploadInfo = new UploadInfo();
+		uploadInfo.setOwnerId(newName);
+		uploadInfo.setUrls(repo.saveAll(newUploads).stream().map(upload -> upload.getPath()).collect(Collectors.toList()));
+		return uploadInfo;
+
 	}
 
 }

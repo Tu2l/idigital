@@ -1,16 +1,16 @@
 import React, { useContext, useState } from "react";
 import { Alert, Button, Grid, TextField, Typography } from "@mui/material";
-import { NAV_CLICK_ACTION } from "../../App";
+import { NAV_CLICK_ACTION } from "../../nav-actions";
 import { login } from "../../connections/login-register";
 import { AuthContext } from "../../contexts/AuthContext";
+import { NavContext } from "../../contexts/NavContext";
 
 export default function Login({ callback }) {
+  const { loading, setLoading, alert, setAlert } = useContext(NavContext);
+  const { setLogin } = useContext(AuthContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [alert, setAlert] = useState({});
-  const [loading, setLoading] = useState(false);
-
-  const { setAuthToken } = useContext(AuthContext);
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
@@ -22,20 +22,10 @@ export default function Login({ callback }) {
 
     setAlert({});
 
-    // console.log(email, password);
-
-    //submit request for login
     const handleCallback = {
       success: (res) => {
-        setAlert({
-          severity: "success",
-          message: res.data.message,
-        });
-        // setLoading(false);
-
-        localStorage.setItem("userId", res.data.data.userid);
-        // console.log(res.data);
-        setAuthToken(res.data.data.token);
+        res.data.data.role = "USER";
+        setLogin(res.data.data);
 
         if (callback) callback(NAV_CLICK_ACTION.HOME);
       },
@@ -51,7 +41,6 @@ export default function Login({ callback }) {
     };
 
     login({ emailId: email, password }, handleCallback);
-
     setLoading(true);
   };
 
@@ -75,9 +64,9 @@ export default function Login({ callback }) {
           }}
           item
           xs={12}
-          sm={12}
-          md={8}
-          lg={6}
+          sm={10}
+          md={4}
+          lg={4}
         >
           <Typography
             align="center"
@@ -86,12 +75,6 @@ export default function Login({ callback }) {
           >
             Login
           </Typography>
-
-          {alert.message ? (
-            <>
-              <Alert severity={alert.severity}>{alert.message}</Alert> <br />
-            </>
-          ) : null}
 
           <TextField
             fullWidth

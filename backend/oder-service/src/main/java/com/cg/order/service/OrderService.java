@@ -4,6 +4,8 @@ import com.cg.order.dto.OrderDto;
 import com.cg.order.entity.OrderStatus;
 
 public interface OrderService {
+	Object get();
+	
 	Object get(Long orderId);
 
 	Object getByUser(Long userId);

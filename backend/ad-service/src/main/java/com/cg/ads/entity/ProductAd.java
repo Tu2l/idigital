@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,12 +23,14 @@ public class ProductAd {
 	private Long userId;
 	@Column(nullable = false)
 	private String title;
-	private String desc;
+	@Column(columnDefinition="text", length=10485760)
+	private String description;
 	private String remarks;
 	private double price;
 	private int quantity;
 	private Long categoryId;
-	private Boolean accepted;
+	@Enumerated(EnumType.STRING)
+	private AdStatus status;
 	private LocalDate createdAt;
 	private LocalDate updatedAt;
 

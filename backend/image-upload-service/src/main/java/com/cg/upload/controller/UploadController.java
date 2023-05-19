@@ -3,6 +3,7 @@ package com.cg.upload.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cg.upload.service.UploadService;
 import com.cg.upload.util.ResponseUtil;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/upload")
 public class UploadController {
@@ -29,6 +31,12 @@ public class UploadController {
 	public ResponseEntity<?> upload(@PathVariable String ownerId, @RequestParam("files") MultipartFile[] files) {
 		return responseUtil.createSuccessResponse(service.upload(ownerId, files), BASE_URL + "/" + ownerId,
 				HttpStatus.CREATED);
+	}
+
+	@PostMapping("/rename/{originalName}/{newName}")
+	public ResponseEntity<?> rename(@PathVariable String originalName, @PathVariable String newName) {
+		return responseUtil.createSuccessResponse(service.rename(originalName, newName),
+				BASE_URL + "/rename/" + originalName + "/" + newName, HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/filename/{fileName}")

@@ -1,14 +1,15 @@
 import { Button, TextField, Typography, Alert } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   getAddress,
   saveAddress,
   updateAddress,
 } from "../../connections/address";
+import { NavContext } from "../../contexts/NavContext";
 
 export default function AddressForm({ authToken, userId }) {
-  const [alert, setAlert] = useState({});
-  const [loading, setLoading] = useState(false);
+  const { loading, setLoading, alert, setAlert } = useContext(NavContext);
+
   const [editAddress, setEditAddress] = useState(false);
   const [save, setSave] = useState(false);
 
@@ -68,10 +69,6 @@ export default function AddressForm({ authToken, userId }) {
         setAddress({ ...res.data.data[0] });
         setSave(res.data.data.length === 0);
         setLoading(false);
-        // console.log(res.data.data);
-        // setTimeout(() => {
-        //   setLoading(false);
-        // }, 2000);
       },
       error: (error) => {
         const msg = error?.response?.data?.message;
@@ -87,117 +84,110 @@ export default function AddressForm({ authToken, userId }) {
   }, []);
 
   return (
-    <>
-      {alert.message ? (
-        <>
-          <Alert severity={alert.severity}>{alert.message}</Alert> <br />
-        </>
-      ) : null}
-      <form onSubmit={handleAddressUpdate}>
-        <Typography align="left" variant="h5" sx={{ paddingBottom: "10px" }}>
-          Address
-        </Typography>
+    <form onSubmit={handleAddressUpdate}>
+      <Typography align="left" variant="h5" sx={{ paddingBottom: "10px" }}>
+        Address
+      </Typography>
 
-        <TextField
-          fullWidth
-          value={address?.addressLine1}
-          onChange={(e) => {
-            setAddress({ ...address, addressLine1: e.target.value });
-          }}
-          label="Address Line 1"
-          variant="outlined"
-          type="text"
-          disabled={!editAddress}
-        />
+      <TextField
+        fullWidth
+        value={address?.addressLine1}
+        onChange={(e) => {
+          setAddress({ ...address, addressLine1: e.target.value });
+        }}
+        label="Address Line 1"
+        variant="outlined"
+        type="text"
+        disabled={!editAddress}
+      />
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <TextField
-          fullWidth
-          value={address?.addressLine2}
-          onChange={(e) => {
-            setAddress({ ...address, addressLine2: e.target.value });
-          }}
-          label="Address Line 2"
-          variant="outlined"
-          type="text"
-          disabled={!editAddress}
-        />
+      <TextField
+        fullWidth
+        value={address?.addressLine2}
+        onChange={(e) => {
+          setAddress({ ...address, addressLine2: e.target.value });
+        }}
+        label="Address Line 2"
+        variant="outlined"
+        type="text"
+        disabled={!editAddress}
+      />
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <TextField
-          fullWidth
-          value={address?.city}
-          onChange={(e) => {
-            setAddress({ ...address, city: e.target.value });
-          }}
-          label="City"
-          variant="outlined"
-          type="text"
-          disabled={!editAddress}
-        />
+      <TextField
+        fullWidth
+        value={address?.city}
+        onChange={(e) => {
+          setAddress({ ...address, city: e.target.value });
+        }}
+        label="City"
+        variant="outlined"
+        type="text"
+        disabled={!editAddress}
+      />
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <TextField
-          fullWidth
-          value={address?.state}
-          onChange={(e) => {
-            setAddress({ ...address, state: e.target.value });
-          }}
-          label="State"
-          variant="outlined"
-          type="text"
-          disabled={!editAddress}
-        />
+      <TextField
+        fullWidth
+        value={address?.state}
+        onChange={(e) => {
+          setAddress({ ...address, state: e.target.value });
+        }}
+        label="State"
+        variant="outlined"
+        type="text"
+        disabled={!editAddress}
+      />
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <TextField
-          fullWidth
-          value={address?.pin}
-          onChange={(e) => {
-            setAddress({ ...address, pin: e.target.value });
-          }}
-          label="PIN"
-          variant="outlined"
-          type="text"
-          disabled={!editAddress}
-        />
+      <TextField
+        fullWidth
+        value={address?.pin}
+        onChange={(e) => {
+          setAddress({ ...address, pin: e.target.value });
+        }}
+        label="PIN"
+        variant="outlined"
+        type="text"
+        disabled={!editAddress}
+      />
 
-        <br />
-        <br />
-        {editAddress ? (
-          <Button
-            fullWidth
-            sx={{
-              marginBottom: "5px",
-            }}
-            variant="contained"
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? "Please wait" : "Save"}
-          </Button>
-        ) : null}
-
+      <br />
+      <br />
+      {editAddress ? (
         <Button
           fullWidth
-          variant="contained"
-          color={editAddress ? "error" : "success"}
-          disabled={loading}
-          onClick={(e) => {
-            setEditAddress(!editAddress);
+          sx={{
+            marginBottom: "5px",
           }}
+          variant="contained"
+          type="submit"
+          disabled={loading}
         >
-          {loading ? "Please wait" : editAddress ? "Cancel" : "Edit Details"}
+          {loading ? "Please wait" : "Save"}
         </Button>
-      </form>
-    </>
+      ) : null}
+
+      <Button
+        fullWidth
+        variant="contained"
+        color={editAddress ? "error" : "success"}
+        disabled={loading}
+        onClick={(e) => {
+          setEditAddress(!editAddress);
+        }}
+      >
+        {loading ? "Please wait" : editAddress ? "Cancel" : "Edit Details"}
+      </Button>
+    </form>
   );
 }

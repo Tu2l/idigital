@@ -14,10 +14,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "order_table")
 public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,6 +29,8 @@ public class Order {
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status = OrderStatus.PENDING;
 	private LocalDate deliveryDate;
+	
+	private LocalDate createdAt;
 	private LocalDate updatedAt;
 
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
@@ -37,14 +41,22 @@ public class Order {
 			return;
 
 		this.products = products;
+		if(this.totalPrice == null)
+			this.totalPrice = 0.0;
+		
 		for (Product product : this.products) {
 			product.setOrder(this);
 			this.totalPrice += product.getPrice();
 		}
 	}
 
-	@PreUpdate
+
 	@PrePersist
+	void prePersist() {
+		createdAt = updatedAt = LocalDate.now();
+	}
+	
+	@PreUpdate
 	void updateDate() {
 		updatedAt = LocalDate.now();
 	}

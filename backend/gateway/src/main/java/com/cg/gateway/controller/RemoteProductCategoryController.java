@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,7 @@ public class RemoteProductCategoryController {
 		return new ResponseEntity<>(service.add(dto), HttpStatus.CREATED);
 	}
 
-	@PostMapping("/{categoryId}")
+	@PutMapping("/{categoryId}")
 	public ResponseEntity<?> update(@PathVariable Long categoryId, @RequestBody Object dto) {
 		return new ResponseEntity<>(service.update(categoryId, dto), HttpStatus.ACCEPTED);
 	}

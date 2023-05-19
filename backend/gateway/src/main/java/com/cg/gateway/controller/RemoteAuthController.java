@@ -25,6 +25,11 @@ public class RemoteAuthController {
 	public ResponseEntity<?> login(@RequestBody Object request) {
 		return new ResponseEntity<>(authService.login(request), HttpStatus.ACCEPTED);
 	}
+	
+	@PostMapping("/admin")
+	public ResponseEntity<?> adminLogin(@RequestBody Object request) {
+		return new ResponseEntity<>(authService.adminLogin(request), HttpStatus.ACCEPTED);
+	}
 
 	@GetMapping("/validate/{token}")
 	public ResponseEntity<?> validate(@PathVariable String token) {
